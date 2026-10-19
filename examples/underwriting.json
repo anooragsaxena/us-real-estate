@@ -1,0 +1,20 @@
+{
+  "_instruction": "SAMPLE ONLY; remove this key before running the calculator. All figures hypothetical.",
+  "purchase_price_usd": 225000,
+  "monthly_rent_usd": 1900,
+  "down_payment_fraction": 0.30,
+  "annual_interest_rate": 0.0775,
+  "loan_years": 30,
+  "annual_property_tax_usd": 1800,
+  "annual_insurance_usd": 1800,
+  "monthly_hoa_usd": 0,
+  "monthly_other_usd": 0,
+  "management_fraction": 0.08,
+  "vacancy_fraction": 0.05,
+  "maintenance_fraction": 0.06,
+  "capex_fraction": 0.05,
+  "closing_cost_fraction": 0.04,
+  "upfront_repairs_usd": 5000,
+  "reserves_usd": 25000,
+  "target_monthly_cashflow_usd": 250
+}
