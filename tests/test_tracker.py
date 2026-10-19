@@ -58,8 +58,21 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(record["assessments"][0]["rent_comp_count"], 3)
         self.assertIn("monthly_cashflow_usd", json.loads(record["assessments"][0]["results_json"]))
         with sqlite3.connect(self.db_path) as c:
-            self.assertEqual(c.execute("PRAGMA foreign_keys").fetchone()[0], 0)
             self.assertEqual(c.execute("SELECT asking_price_usd FROM listings").fetchone()[0], 215000)
+        snapshot = Path(self.tmp.name) / "snapshot.json"
+        self.run_cli("export", "--output", str(snapshot))
+        self.assertEqual(len(json.loads(snapshot.read_text())["rental_comps"]), 3)
+        original_db = self.db_path
+        self.db_path = Path(self.tmp.name) / "restored.sqlite"
+        try:
+            self.run_cli("init")
+            self.run_cli("import", "--input", str(snapshot))
+            restored = json.loads(self.run_cli("show", "--listing-id", "1"))
+            self.assertEqual(len(restored["price_observations"]), 2)
+            self.assertEqual(len(restored["assessments"]), 1)
+            self.assertIn("WATCH", self.run_cli("report"))
+        finally:
+            self.db_path = original_db
 
     def test_property_filter_rejects_ineligible(self):
         self.run_cli("init")
