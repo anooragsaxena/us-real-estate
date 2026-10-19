@@ -46,6 +46,7 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 ## Engineering guardrails
 
 - Never scrape listing sites in ways that breach terms or bypass controls.
+- SQLite data is workspace-local. Use tracker.py export/import for portable JSON backups; never assume future agents can see an unshared local DB. Review sensitive notes and financial assumptions before committing a snapshot, especially to this public repository.
 - Use parameterized SQL and enable foreign keys. Do not commit data/*.sqlite, secrets, borrower documents or credentials.
 - Keep calculator deterministic, typed and independently testable; avoid rounding intermediate calculations, round only on presentation.
 - Distinguish capex reserves (below NOI) from operating expenses (within NOI).
