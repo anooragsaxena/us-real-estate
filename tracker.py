@@ -197,6 +197,42 @@ def cmd_show(conn, a):
     print(json.dumps(result, indent=2))
 
 
+TABLES = ("listings", "price_observations", "rental_comps", "assessments")
+
+
+def cmd_export(conn, a):
+    """Create an optional portable JSON snapshot; review before sharing."""
+    payload = {"format_version": 1, "exported_on": date.today().isoformat()}
+    for table in TABLES:
+        payload[table] = [dict(row) for row in conn.execute(f"SELECT * FROM {table} ORDER BY id")]
+    a.output.parent.mkdir(parents=True, exist_ok=True)
+    a.output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    print(f"Exported snapshot to {a.output}. Review for private information before committing.")
+
+
+def cmd_import(conn, a):
+    """Restore into an empty, already initialized SQLite DB."""
+    payload = json.loads(a.input.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or payload.get("format_version") != 1:
+        raise ValueError("unsupported or invalid snapshot format")
+    if any(conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] for table in TABLES):
+        raise ValueError("import requires an empty database to avoid data loss or duplicates")
+    with conn:
+        for table in TABLES:
+            allowed = {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}
+            for item in payload.get(table, []):
+                if not isinstance(item, dict) or not item or set(item) - allowed:
+                    raise ValueError(f"invalid fields in snapshot table {table}")
+                columns = list(item)
+                placeholders = ",".join("?" for _ in columns)
+                names = ",".join(columns)
+                conn.execute(
+                    f"INSERT INTO {table} ({names}) VALUES ({placeholders})",
+                    tuple(item[c] for c in columns),
+                )
+    print(f"Imported snapshot from {a.input}")
+
+
 def build_parser():
     parser = argparse.ArgumentParser(description="US single-family rental investment tracker")
     parser.add_argument("--db", type=Path, default=DEFAULT_DB)
@@ -231,6 +267,10 @@ def build_parser():
     assess.add_argument("--input", type=Path, required=True)
     assess.add_argument("--scenario", default="base")
     assess.add_argument("--notes", default="")
+    export = sub.add_parser("export", help="write a portable JSON snapshot (may contain financial assumptions)")
+    export.add_argument("--output", type=Path, default=ROOT / "data" / "research-export.json")
+    restore = sub.add_parser("import", help="restore JSON into an empty initialized database")
+    restore.add_argument("--input", type=Path, required=True)
     sub.add_parser("report", help="show most recent assessment for each property")
     show = sub.add_parser("show", help="show property, comp and assessment history")
     show.add_argument("--listing-id", type=int, required=True)
@@ -255,6 +295,10 @@ def main(argv=None):
                 cmd_rent_comp(conn, args)
             elif args.command == "assess":
                 cmd_assess(conn, args)
+            elif args.command == "export":
+                cmd_export(conn, args)
+            elif args.command == "import":
+                cmd_import(conn, args)
             elif args.command == "report":
                 cmd_report(conn)
             elif args.command == "show":
