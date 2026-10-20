@@ -1,0 +1,161 @@
+{
+  "case_id": "2026-10-19_4222-Union-Hill-Ct",
+  "as_of": "2026-10-19",
+  "data_quality": "Research snapshot from active Zillow listing and independently cross-checked sale/rental portals. Zillow/Redfin data can lag; all rental prices are advertised, none are executed lease amounts. Distance from subject only independently sourced for 31 Winley Chase; DO NOT pretend other distances verified. Owner's actual in-place lease rent is UNKNOWN.",
+  "listing": {
+    "source": "Zillow",
+    "url": "https://www.zillow.com/homedetails/4222-Union-Hill-Ct-North-Las-Vegas-NV-89032/6982377_zpid/",
+    "address": "4222 Union Hill Ct",
+    "city": "North Las Vegas",
+    "state": "NV",
+    "zip_code": "89032",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "property_type": "detached_sfh",
+    "finished_sqft": 1099,
+    "year_built": 1996,
+    "asking_price_usd": 324888,
+    "listing_status": "active",
+    "original_ask_usd": 349888,
+    "price_cut_date": "2026-10-06",
+    "monthly_hoa_usd": 75,
+    "annual_tax_history_usd": 1262,
+    "zillow_rent_zestimate_usd": 1849,
+    "current_tenant": "Listing advertises a six-year tenant who wishes to remain.",
+    "current_contract_rent_usd": null,
+    "current_lease_end": null,
+    "notes": "Gated Village at Craig Ranch; 2-car attached garage, stucco/tile roof. Contract rent, deposits, collection history, exact HOA lease rules, roof/HVAC and interiors not independently inspected. MLS #2794385."
+  },
+  "sale_comps_preliminary": [
+    {
+      "address": "31 Winley Chase Ave, North Las Vegas NV 89032",
+      "sold_price_usd": 350000,
+      "sold_on": "2026-04-10",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1099,
+      "distance_miles": 0.06,
+      "distance_source_url": "https://www.trulia.com/home/4222-union-hill-ct-north-las-vegas-nv-89032-6982377",
+      "source_url": "https://www.trulia.com/home/31-winley-chase-ave-north-las-vegas-nv-89032-6982369",
+      "cross_check_url": "https://www.zillow.com/craig-ranch-north-las-vegas-nv/sold/",
+      "sale_verified_by_recorder": false,
+      "arm_length_verified": false,
+      "condition": "unknown",
+      "notes": "Excellent size/bedroom/distance fit. Zillow, Trulia report $350k sale; MLS/public deed and concessions not independently verified."
+    },
+    {
+      "address": "3740 Shadow Tree St, North Las Vegas NV 89032",
+      "sold_price_usd": 360000,
+      "sold_on": "2026-01-27",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1150,
+      "distance_miles": null,
+      "source_url": "https://www.redfin.com/NV/North-Las-Vegas/3740-Shadow-Tree-St-89032/home/29825840",
+      "cross_check_url": "https://www.zillow.com/homedetails/3740-Shadow-Tree-St-North-Las-Vegas-NV-89032/52207753_zpid/",
+      "sale_verified_by_recorder": false,
+      "arm_length_verified": false,
+      "condition": "updated; laminate flooring, landscaped yard per listing",
+      "notes": "Same ZIP and similar square footage; precise radius and condition/site differences not established."
+    },
+    {
+      "address": "510 Sparrow Gull Ct, North Las Vegas NV 89032",
+      "sold_price_usd": 345000,
+      "sold_on": "2026-03-25",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1280,
+      "distance_miles": null,
+      "source_url": "https://www.zillow.com/homedetails/510-Sparrow-Gull-Ct-North-Las-Vegas-NV-89032/52207715_zpid/",
+      "cross_check_url": "https://www.redfin.com/NV/North-Las-Vegas/3728-Shadow-Tree-St-89032/home/29825837",
+      "sale_verified_by_recorder": false,
+      "arm_length_verified": false,
+      "condition": "unknown",
+      "notes": "16.5% larger than subject. Precise radius, concessions, condition and market similarity not verified."
+    }
+  ],
+  "sale_comp_descriptive_only": {
+    "preliminary_median_usd": 350000,
+    "subject_ask_minus_median_pct": -7.174857142857143,
+    "status": "UNVERIFIED FAIR VALUE: not three recorder/MLS validated arm-length sales with measured distances and condition adjustments",
+    "caution": "A same-subdivision 3BD/2BA 1,099 sq ft home at 4247 Union Hill Ct reportedly sold for $325,000 on 2025-08-25; older than 12 months and therefore excluded from current comparable median. Shows current asking price may not be exceptionally cheap."
+  },
+  "rental_comps": [
+    {
+      "address": "3741 Sorrowing Sparrow Ct, North Las Vegas NV 89032",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1065,
+      "asking_rent_usd": 1650,
+      "source_url": "https://www.apartments.com/3741-sorrowing-sparrow-ct-north-las-vegas-nv/fgjxpzs/",
+      "observed_on": "2026-10-19",
+      "notes": "Another MLS portal quoted $1,700; used lower observable ask. Same ZIP but precise distance unknown."
+    },
+    {
+      "address": "3721 Nairobi Ln, North Las Vegas NV 89032",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1124,
+      "asking_rent_usd": 1750,
+      "source_url": "https://www.realtor.com/rentals/details/3721-Nairobi-Ln_North-Las-Vegas_NV_89032_M23878-94769",
+      "observed_on": "2026-10-19",
+      "notes": "Site-built one-story house; nearby competitive market not yet confirmed by property manager."
+    },
+    {
+      "address": "3838 Sorrowing Sparrow Ct, North Las Vegas NV 89032",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "finished_sqft": 1150,
+      "asking_rent_usd": 1798,
+      "source_url": "https://www.realtor.com/rentals/details/3838-Sorrowing-Sparrow-Ct_North-Las-Vegas_NV_89032_M16180-16926",
+      "observed_on": "2026-10-19",
+      "notes": "Also listed on Zillow at $1798. Asking only; fee inclusions may vary."
+    }
+  ],
+  "underwriting_inputs": {
+    "purchase_price_usd": 324888,
+    "monthly_rent_usd": 1750,
+    "down_payment_fraction": 0.3,
+    "annual_interest_rate": 0.0775,
+    "loan_years": 30,
+    "annual_property_tax_usd": 1500,
+    "annual_insurance_usd": 1800,
+    "monthly_hoa_usd": 75,
+    "monthly_other_usd": 0,
+    "management_fraction": 0.08,
+    "vacancy_fraction": 0.05,
+    "maintenance_fraction": 0.06,
+    "capex_fraction": 0.05,
+    "closing_cost_fraction": 0.04,
+    "upfront_repairs_usd": 5000,
+    "reserves_usd": 25000,
+    "target_monthly_cashflow_usd": 250
+  },
+  "assumptions_and_flags": [
+    {
+      "category": "leasing",
+      "severity": "high",
+      "evidence_status": "confirmed",
+      "description": "Existing long-term tenant advertised, but current lease rent, expiry, deposits, arrears and assignment conditions not available in public listing.",
+      "source_url": "https://www.zillow.com/homedetails/4222-Union-Hill-Ct-North-Las-Vegas-NV-89032/6982377_zpid/"
+    },
+    {
+      "category": "condition",
+      "severity": "medium",
+      "evidence_status": "suspected",
+      "description": "Potential deferred interior/roof/HVAC repairs; listing description is sparse and no physical inspection. Upfront $5k is a scenario placeholder only.",
+      "source_url": "https://www.zillow.com/homedetails/4222-Union-Hill-Ct-North-Las-Vegas-NV-89032/6982377_zpid/"
+    },
+    {
+      "category": "leasing",
+      "severity": "medium",
+      "evidence_status": "suspected",
+      "description": "HOA $75/month with unknown tenant/leasing rules and future assessments.",
+      "source_url": "https://www.zillow.com/homedetails/4222-Union-Hill-Ct-North-Las-Vegas-NV-89032/6982377_zpid/"
+    }
+  ],
+  "source_context": [
+    "https://www.leg.state.nv.us/nrs/nrs-118a.html",
+    "https://www.clarkcountynv.gov/government/assessor/general_information/tax-abatement"
+  ]
+}
