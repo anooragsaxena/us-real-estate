@@ -37,11 +37,11 @@ CLI uses data/real_estate.sqlite by default. Override with --db PATH before the 
 ## Process
 
 1. Screen qualifying Zillow/Redfin detached homes; record address, current ask, date, bedrooms, bathrooms, finished area and original URL.
-2. Record **at least 3 recent, nearby CLOSED-sale neighborhood comps** and assess size, condition, location and sale terms. Use `sale-comp` and `comps`; mark `--verified --transaction arm_length` only after independently verifying actual sold details. Raw sold-price median is descriptive, not appraised value.
+2. Record **at least 3 recent, nearby CLOSED-sale neighborhood comps** and assess size, condition, location and sale terms. Use `sale-comp` and `comps`; mark `--verified --verification-url "https://independent-source/record" --transaction arm_length` only after independently verifying actual sold details. Raw sold-price median is descriptive, not appraised value.
 3. Investigate why a home looks cheaper: deferred roof/HVAC work, renovations, legal/permit limitations, hazards, location disadvantage or distress. Use `finding` with `suspected/confirmed` status and evidence; include justified upfront repairs in underwriting.
 4. Record at least 3 comparable long-term rental listings or actual leases, explaining differences. Advertised rents are not achieved rents.
 5. Supply documented financing, property tax, insurance, HOA, management, vacancy, capex, repairs and reserves in an underwriting JSON; run base and downside with `assess`.
-6. Record WATCH or REVIEW with uncertainty and next verification steps. **REVIEW requires both rental and neighborhood sale comps plus passing cash flow and no unresolved high/critical flags.** The CLI never authorizes a purchase.
+6. Record WATCH or REVIEW with uncertainty and next verification steps. **REVIEW requires both rental and independently verified neighborhood sale comps, passing base/downside cash flow, no open high/critical findings, and enough upfront repair budget for recorded open condition issues.** The CLI never authorizes a purchase.
 
 The quick-start addresses and comp data are fabricated demonstrations, not live listings or verified sales. For a real evaluation, use original Zillow/Redfin links and confirm closed sales independently.
 
