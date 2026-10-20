@@ -2,7 +2,7 @@
 
 ## Mission and authority
 
-Help a Canadian tax resident diversify through U.S. detached single-family long-term rental investments. Optimize for sustainable positive **monthly cash flow**, downside resilience, good neighborhoods, tenant demand, and reasonable liquidity. Do not recommend a purchase based on speculative appreciation or price cuts alone. No transaction authority: do not place offers, commit funds, or contact parties without an explicit user request.
+Help a Canadian tax resident diversify through U.S. detached single-family long-term rental investments. Optimize for **risk-adjusted long-horizon returns**, sustainable rental fundamentals, downside resilience, valuation discipline, credible tenant demand and capital liquidity. Positive monthly cash flow remains preferred but is not the sole objective. Do not recommend a purchase based on speculative appreciation or price cuts alone. No transaction authority: do not place offers, commit funds, or contact parties without an explicit user request.
 
 Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or recommendations. For property evaluations follow `.agents/skills/property-evaluation/SKILL.md`. Follow that policy over illustrative sample inputs. Keep changes lightweight: Python stdlib, SQLite, concise Markdown, reproducible tests; do not introduce infrastructure or dependencies without clear need.
 
@@ -28,8 +28,11 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 
 ## Underwriting and decisions
 
-- Cash-flow goal: USD 200–300/month, base target >=USD 250/month **after debt service and property operating costs including vacancy, management, maintenance and capex reserve**, before personal income tax.
-- Require nonnegative downside scenario for progression to deep due diligence, or flag as an explicit exception, never silent acceptance.
+- **Preferred income track:** USD 200–300/month positive pre-personal-income-tax cash flow, target >=USD 250/month after debt service and property operating costs (including vacancy, management, maintenance, capex).
+- **Value / total-return exception track:** analyze potentially negative-cash-flow properties only where supported by independent comp-based acquisition value or realistic improvement thesis. Never grant an automatic negative-cash-flow allowance; flag candidate WATCH until user approves annual cash-support cap, liquidity and return hurdle. Default nominal 8% discounted-cash-flow comparison is a diagnostic reference, NOT an investor-approved hurdle.
+- Mandatory 5-year and 10-year scenario `projections.py` / `tracker.py project`: guarded base, downside and limited upside, all including exit costs, fully amortizing debt, annual cash calls, capex, operating inflation and nominal/real IRR. Initial reserves are assumed intact, with losses additionally funded by owner cash.
+- **No magical appreciation/rates:** base and upside value paths are FLAT in years 1 and 2; downside includes multiple years of price declines. Do not claim prices *cannot* rise: these are conservative modeling choices. Hold actual loan rate constant for each projection; no refinance/cash-out or assumed 3% mortgage. Compare alternative origination rates (6–8.5%) only as sensitivity, not future relief. Update with lender quotes.
+- The income track prefers nonnegative downside monthly cash flow. For value-track WATCH exceptions, quantify 24-month and full-hold owner support, check against user-approved cash budget, and require documented downside and alternative-investment comparison before human consideration.
 - Track purchase price, gross rent, effective rent, NOI, cap rate, DSCR, debt service, monthly cash flow, required rent, maximum price compatible with target, cash invested, cash-on-cash return, and any cash shortfall.
 - Use current actual mortgage quotes for final decisions. Illustrative 30% down and 7.75% APR are *scenario placeholders only*; test sensitivity to higher interest, lower rents, vacancies, repair and insurance shocks.
 - Max-offer calculation assumes fixed tax/insurance dollars and is a screening ceiling, NOT an appraisal or offer recommendation. Recalculate taxes and insurance at proposed offer and confirm financing eligibility (including lender loan minimum).
@@ -43,8 +46,8 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 2. Add only qualifying property listings; capture source, observation date, property details and price.
 3. Add neighborhood **closed-sale** comps and investigate reasons for price differences; record findings and repair assumptions.
 4. Add rental comps and document why comparable; reject comps with materially different size, features, condition or neighborhood unless adjusted.
-5. Create a property-specific JSON scenario, run tracker.py assess, review monthly cash flow and stress results, then save findings.
-6. Compare candidate scenarios by risk-adjusted yield, cash required and robustness. Report both disqualifiers and unknowns.
+5. Create a property-specific JSON scenario; run `tracker.py assess` for current cash flow, then `tracker.py project` for 5/10-year guarded-base, downside and limited-upside returns. Verify that observed *in-place* lease rent, not hypothetical market ask, anchors a tenanted purchase.
+6. Compare candidates by cash-flow risk, 5/10-year IRR sensitivity, local value vs condition, 24-month financing support, total committed cash and lender DSCR. Report property-level upside claims only when supported by evidence, never assumed year-1 price growth.
 7. Refresh stale listings, rent ads, rate assumptions and legal/tax rules before decisions. Write short dated assessments with source links.
 
 ## Engineering guardrails
@@ -52,7 +55,7 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 - Never scrape listing sites in ways that breach terms or bypass controls.
 - SQLite data is workspace-local. Use tracker.py export/import for portable JSON backups; never assume future agents can see an unshared local DB. Review sensitive notes and financial assumptions before committing a snapshot, especially to this public repository.
 - Use parameterized SQL and enable foreign keys. Do not commit data/*.sqlite, secrets, borrower documents or credentials.
-- Keep calculator deterministic, typed and independently testable; avoid rounding intermediate calculations, round only on presentation.
+- Keep calculator deterministic, typed and independently testable; avoid rounding intermediate calculations, round only on presentation. Preserve reproducible 5/10-year scenario outputs in SQLite (projections table) and document modeling version and latest macro baseline.
 - Distinguish capex reserves (below NOI) from operating expenses (within NOI).
 - Add/change tests when formulas or screening rules change; run python3 -m unittest discover -s tests -v.
 - Keep project files concise and do not turn this into a hosted app without a documented, justified requirement.
