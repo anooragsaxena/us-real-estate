@@ -4,7 +4,7 @@
 
 Help a Canadian tax resident diversify through U.S. detached single-family long-term rental investments. Optimize for sustainable positive **monthly cash flow**, downside resilience, good neighborhoods, tenant demand, and reasonable liquidity. Do not recommend a purchase based on speculative appreciation or price cuts alone. No transaction authority: do not place offers, commit funds, or contact parties without an explicit user request.
 
-Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or recommendations. Follow that policy over illustrative sample inputs. Keep changes lightweight: Python stdlib, SQLite, concise Markdown, reproducible tests; do not introduce infrastructure or dependencies without clear need.
+Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or recommendations. For property evaluations follow `.agents/skills/property-evaluation/SKILL.md`. Follow that policy over illustrative sample inputs. Keep changes lightweight: Python stdlib, SQLite, concise Markdown, reproducible tests; do not introduce infrastructure or dependencies without clear need.
 
 ## Eligible properties and geography
 
@@ -20,6 +20,9 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 - Record source URL, observed date, subject address and applicability for every important number. Distinguish asking price vs closed sale, advertised rent vs signed rent, generic rate vs borrower-specific quote, median vs matched comparable.
 - Verify 2BD/2BA or 3BD/2+BA, detached structure, ownership type, lease rules, HOA, condition, year built, taxes and price history. A listing page may be stale, inaccurate or disappear.
 - Seek >=3 defensible rental comps per candidate where feasible; if fewer, mark rent **unverified** and do not label investment ready.
+- Separately research >=3 **closed neighborhood sale comps** in the same competitive micro-market; prefer <=6-month closings, ordinarily <=12 months, and close physical similarity. Verify sold prices/dates through independent evidence when available, not active listing asks.
+- Use `tracker.py sale-comp`, `comps` and `finding` to record sales and the suspected vs confirmed reasons for any low listing price. Unadjusted sold-price medians and raw price gaps are NOT valuations.
+- Examine deferred maintenance, renovation, permits, title, HOA, insurance, hazard exposures and location differences. Record evidence and realistic upfront repair costs; unresolved high/critical findings block an automated REVIEW screen.
 - Zillow Rent Zestimate is a supporting signal, not rent verification. Never fabricate listings, prices, rental comps, permits or lender quotes.
 - Validate underwriting arithmetic with cashflow.py; preserve JSON inputs, outputs and observation dates in SQLite. Explain uncertainty and missing information; identify the date of market evidence.
 
@@ -32,16 +35,17 @@ Read INVESTMENT_POLICY.md before any screening, analysis, implementation, or rec
 - Max-offer calculation assumes fixed tax/insurance dollars and is a screening ceiling, NOT an appraisal or offer recommendation. Recalculate taxes and insurance at proposed offer and confirm financing eligibility (including lender loan minimum).
 - Demand a worthwhile total return for cash tied up. A positive USD 250/month cash flow alone may still be unattractive versus liquid alternatives; show cash-on-cash, liquidity and risk separately.
 - Rental investment cash flow is before personal income taxes; Canadian tax residency implies U.S./Canadian filings, foreign tax credits, FX and legal-ownership review. Never declare a structure tax-optimal absent professional advice.
-- Recommendation labels: REJECT (ineligible or failing economics), WATCH (potential; incomplete/negative economics at asking price), REVIEW (base economics pass but due diligence outstanding), DUE DILIGENCE (verified comps + base and stress pass); never represent any screen as approval to buy.
+- Recommendation labels: REJECT (ineligible or failing economics), WATCH (potential; incomplete/negative economics at asking price), REVIEW (base/stress economics and comp quantity gates pass, no serious unresolved findings, due diligence still outstanding), DUE DILIGENCE (verified comps + base and stress pass); never represent any screen as approval to buy.
 
 ## Research workflow
 
 1. Screen markets for rent-to-price economics, jobs, vacancy, building supply, inventory, insurance and landlord law; reassess rankings over time.
 2. Add only qualifying property listings; capture source, observation date, property details and price.
-3. Add rental comps and document why comparable; reject comps with materially different size, features, condition or neighborhood unless adjusted.
-4. Create a property-specific JSON scenario, run tracker.py assess, review monthly cash flow and stress results, then save findings.
-5. Compare candidate scenarios by risk-adjusted yield, cash required and robustness. Report both disqualifiers and unknowns.
-6. Refresh stale listings, rent ads, rate assumptions and legal/tax rules before decisions. Write short dated assessments with source links.
+3. Add neighborhood **closed-sale** comps and investigate reasons for price differences; record findings and repair assumptions.
+4. Add rental comps and document why comparable; reject comps with materially different size, features, condition or neighborhood unless adjusted.
+5. Create a property-specific JSON scenario, run tracker.py assess, review monthly cash flow and stress results, then save findings.
+6. Compare candidate scenarios by risk-adjusted yield, cash required and robustness. Report both disqualifiers and unknowns.
+7. Refresh stale listings, rent ads, rate assumptions and legal/tax rules before decisions. Write short dated assessments with source links.
 
 ## Engineering guardrails
 
