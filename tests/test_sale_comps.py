@@ -108,16 +108,24 @@ class CliSaleEvidenceTests(unittest.TestCase):
         scenario.write_text(json.dumps(inputs))
         self.assertIn("REVIEW", self.cli("assess","--listing-id","1","--input",str(scenario)))
         self.cli("finding", "--listing-id", "1",
+                 "--category", "condition", "--severity", "medium",
+                 "--description", "Estimated HVAC replacement cost",
+                 "--cost", "8000", "--evidence", "confirmed", "--observed", TODAY)
+        self.assertIn("WATCH", self.cli("assess","--listing-id","1","--input",str(scenario)))
+        current = json.loads(self.cli("show","--listing-id","1"))["assessments"][0]
+        self.assertEqual(json.loads(current["results_json"])["unfunded_condition_repair_estimate_usd"], 3000)
+        self.cli("finding", "--listing-id", "1",
                  "--category", "condition", "--severity", "high",
                  "--description", "Possible roof damage; only listing photos examined",
                  "--evidence", "suspected", "--observed", TODAY)
         self.assertIn("WATCH", self.cli("assess","--listing-id","1","--input",str(scenario)))
         doc = json.loads(self.cli("show", "--listing-id", "1"))
         self.assertEqual(len(doc["sale_comps"]), 3)
-        self.assertEqual(len(doc["findings"]), 1)
+        self.assertEqual(len(doc["findings"]), 2)
         self.assertEqual(doc["assessments"][0]["screen_status"], "WATCH")
-        self.assertEqual(doc["assessments"][1]["screen_status"], "REVIEW")
-        self.assertEqual(doc["sale_comps"][0]["verification_url"], "https://county.example/transfer-0")
+        self.assertEqual(doc["assessments"][1]["screen_status"], "WATCH")
+        self.assertEqual(doc["assessments"][2]["screen_status"], "REVIEW")
+        self.assertEqual(doc["sale_comps"][0]["verification_url"], "https://county.example/transfer-2")
         self.assertEqual(
             json.loads(doc["assessments"][0]["results_json"])["sale_comparison"]["screen_qualified_sale_comps"], 3
         )
@@ -125,7 +133,7 @@ class CliSaleEvidenceTests(unittest.TestCase):
         self.cli("export", "--output", str(snapshot))
         backup = json.loads(snapshot.read_text())
         self.assertEqual(len(backup["sale_comps"]), 3)
-        self.assertEqual(len(backup["findings"]), 1)
+        self.assertEqual(len(backup["findings"]), 2)
 
         restored_db = self.db
         self.db = Path(self.temp.name) / "restored.sqlite"
