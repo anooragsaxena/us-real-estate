@@ -274,6 +274,29 @@ def cmd_project(conn, a):
         p, nominal_hurdle=a.hurdle, inflation_for_real_return=a.inflation,
         selling_cost_fraction=a.selling_cost
     )
+    if a.annual_support_budget is not None:
+        if a.annual_support_budget < 0:
+            raise ValueError("--annual-support-budget must be >=0")
+        annual_worst = max(
+            max(0.0, -entry["operating_cashflow_after_debt_usd"])
+            for horizon in outcome["outcomes"]["downside"].values()
+            for entry in horizon["yearly_details"]
+        )
+        first_two_years = outcome["outcomes"]["downside"]["10"]["first_24_months_cash_support_usd"]
+        outcome["value_exception_funding_check"] = {
+            "annual_support_budget_usd": a.annual_support_budget,
+            "downside_worst_year_support_usd": annual_worst,
+            "downside_first_24_months_support_usd": first_two_years,
+            "within_stated_budget": (
+                annual_worst <= a.annual_support_budget
+                and first_two_years <= 2 * a.annual_support_budget
+            ),
+            "approval": "NOT_APPROVED: budget fit is not valuation, loan eligibility, or investment approval",
+        }
+    else:
+        outcome["value_exception_funding_check"] = {
+            "status": "NOT_SPECIFIED: explicit investor cash-support budget required before exception review"
+        }
     outcome["rent_evidence_type"] = a.rent_source
     outcome["listing_asking_price_usd"] = row["asking_price_usd"]
     outcome["modeled_purchase_price_usd"] = p.purchase_price_usd
@@ -298,6 +321,11 @@ def cmd_project(conn, a):
             print(f"{name:14s} {year:>2s}Y | nominal IRR {nominal_text:>10s}"
                   f" | year-1 cash flow ${result['year_1_monthly_cashflow_usd']:+,.0f}/mo"
                   f" | 24-month cash support ${result['first_24_months_cash_support_usd']:,.0f}")
+    funding = outcome["value_exception_funding_check"]
+    if "within_stated_budget" in funding:
+        print(f"Downside owner support within user-provided annual limit: {funding['within_stated_budget']}")
+    else:
+        print("Negative-cash-flow exception not funded/authorized: cash-support limit NOT SPECIFIED")
     print("No income tax/FX forecast and no claim of realized returns.")
 
 
@@ -466,6 +494,7 @@ def build_parser():
     project.add_argument("--selling-cost", type=float, default=0.06, help="estimated sale transaction cost as fraction")
     project.add_argument("--inflation", type=float, default=0.03, help="illustrative annual inflation for real IRR")
     project.add_argument("--hurdle", type=float, default=0.08, help="nominal return comparison ONLY, not user policy approval")
+    project.add_argument("--annual-support-budget", type=float, help="user-authorized annual USD cash-support ceiling; omitted means no approval")
     project.add_argument("--notes", default="")
     sub.add_parser("report", help="show most recent assessment for each property")
     show = sub.add_parser("show", help="show property, comp and assessment history")
