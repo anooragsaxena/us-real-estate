@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 
 from cashflow import Inputs, underwrite
 from comps import sale_comps_summary
+from projections import compare_scenarios
 
 
 ROOT = Path(__file__).resolve().parent
@@ -257,6 +258,49 @@ def cmd_assess(conn, a):
     print("Pre-income-tax illustration; source quality, financing and inspection require review.")
 
 
+
+def cmd_project(conn, a):
+    """Persist conservative scenario analysis; never upgrade purchase status."""
+    row = conn.execute("SELECT * FROM listings WHERE id=?", (a.listing_id,)).fetchone()
+    if row is None:
+        raise ValueError("listing not found")
+    if not eligible(row["bedrooms"], row["bathrooms"]):
+        raise ValueError("ineligible property")
+    raw = json.loads(a.input.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError("projection input must be a JSON object")
+    p = Inputs(**raw)
+    outcome = compare_scenarios(
+        p, nominal_hurdle=a.hurdle, inflation_for_real_return=a.inflation,
+        selling_cost_fraction=a.selling_cost
+    )
+    outcome["rent_evidence_type"] = a.rent_source
+    outcome["listing_asking_price_usd"] = row["asking_price_usd"]
+    outcome["modeled_purchase_price_usd"] = p.purchase_price_usd
+    outcome["warning"] = (
+        "Screen-only, not investment approval. Sale comp/condition, rent validity, "
+        "financing, US/Canada taxes and FX not verified by this command."
+    )
+    with conn:
+        cur = conn.execute(
+            """INSERT INTO projections
+               (listing_id,inputs_json,results_json,notes) VALUES (?,?,?,?)""",
+            (a.listing_id, json.dumps(asdict(p), sort_keys=True),
+             json.dumps(outcome, sort_keys=True), a.notes),
+        )
+    print(f"Projection #{cur.lastrowid} | research scenario only | rent evidence: {a.rent_source}")
+    print("Mortgage rate stays fixed; NO refinancing or interest-rate cuts assumed.")
+    print("Base and upside: 0% appreciation year 1 (and year 2); downside: losses.")
+    for name, scenarios in outcome["outcomes"].items():
+        for year, result in scenarios.items():
+            nominal = result["nominal_annual_irr"]
+            nominal_text = f"{100*nominal:+.2f}%" if nominal is not None else "undefined"
+            print(f"{name:14s} {year:>2s}Y | nominal IRR {nominal_text:>10s}"
+                  f" | year-1 cash flow ${result['year_1_monthly_cashflow_usd']:+,.0f}/mo"
+                  f" | 24-month cash support ${result['first_24_months_cash_support_usd']:,.0f}")
+    print("No income tax/FX forecast and no claim of realized returns.")
+
+
 def cmd_report(conn):
     rows = conn.execute(
         """SELECT l.id,l.city,l.state,l.bedrooms,l.bathrooms,l.asking_price_usd,
@@ -295,7 +339,7 @@ def cmd_show(conn, a):
     if row is None:
         raise ValueError("listing not found")
     result = {"listing": dict(row)}
-    for table in ("price_observations", "rental_comps", "sale_comps", "findings", "assessments"):
+    for table in ("price_observations", "rental_comps", "sale_comps", "findings", "assessments", "projections"):
         items = conn.execute(
             f"SELECT * FROM {table} WHERE listing_id=? ORDER BY id DESC",
             (a.listing_id,),
@@ -304,7 +348,7 @@ def cmd_show(conn, a):
     print(json.dumps(result, indent=2))
 
 
-TABLES = ("listings", "price_observations", "rental_comps", "sale_comps", "findings", "assessments")
+TABLES = ("listings", "price_observations", "rental_comps", "sale_comps", "findings", "assessments", "projections")
 
 
 def cmd_export(conn, a):
@@ -415,6 +459,14 @@ def build_parser():
     export.add_argument("--output", type=Path, default=ROOT / "data" / "research-export.json")
     restore = sub.add_parser("import", help="restore JSON into an empty initialized database")
     restore.add_argument("--input", type=Path, required=True)
+    project = sub.add_parser("project", help="save conservative 5Y and 10Y total-return scenarios")
+    project.add_argument("--listing-id", type=int, required=True)
+    project.add_argument("--input", type=Path, required=True, help="cashflow Inputs JSON")
+    project.add_argument("--rent-source", choices=["unknown","advertised_comps","manager_supported","executed_lease"], default="unknown")
+    project.add_argument("--selling-cost", type=float, default=0.06, help="estimated sale transaction cost as fraction")
+    project.add_argument("--inflation", type=float, default=0.03, help="illustrative annual inflation for real IRR")
+    project.add_argument("--hurdle", type=float, default=0.08, help="nominal return comparison ONLY, not user policy approval")
+    project.add_argument("--notes", default="")
     sub.add_parser("report", help="show most recent assessment for each property")
     show = sub.add_parser("show", help="show property, comp and assessment history")
     show.add_argument("--listing-id", type=int, required=True)
@@ -449,6 +501,8 @@ def main(argv=None):
                 cmd_export(conn, args)
             elif args.command == "import":
                 cmd_import(conn, args)
+            elif args.command == "project":
+                cmd_project(conn, args)
             elif args.command == "report":
                 cmd_report(conn)
             elif args.command == "show":
