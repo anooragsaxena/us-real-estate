@@ -1,6 +1,6 @@
 # Investment Policy — U.S. Single-Family Rentals
 
-Version: 1.0 | Effective: 2026-10-19 | Currency: USD unless stated otherwise
+Version: 1.1 | Effective: 2026-10-19 | Currency: USD unless stated otherwise
 
 ## 1. Investment mandate
 
@@ -11,6 +11,16 @@ Acquire U.S. real estate for portfolio diversification through durable, long-ter
 **Required**: Detached single-family home, legally rentable on a conventional long-term lease; 2 bedrooms / 2 bathrooms or 3 bedrooms / at least 2 bathrooms; title, land ownership, permitted use and ownership form confirmed. Markets: AZ, NV, WA, OR, ID. Prioritize neighborhoods with sustained tenant demand, employment access, safe/insurable structures and exit liquidity. Research priorities are revisable, not permanent market endorsements.
 
 **Exclude by default**: condos, townhomes, manufactured/mobile homes, land leases, age-restricted communities, major-rehab projects, short-term-rental dependent cases, and restrictive HOA/municipal leasing rules. Treat high HOA fees, pools, well/septic, wildfire/flood risk, insurance gaps, assessments and aging roofs/HVAC as deal-specific red flags.
+
+## 2A. Neighborhood comparable sales and property condition
+
+Evaluate **closed neighborhood sales** separately from long-term rental comps. Prefer at least 3 independently verified, arm's-length sales in the same competitive micro-neighborhood (6 months preferred, up to 12 ordinarily acceptable). Start around 1 mile in urban/suburban neighborhoods; expand for rural homes with a documented reason. Match property type, beds/baths, finished area (screen ±20%), vintage, lot, garage, condition and externalities.
+
+Report median closed-sale price and $/sq ft as **unadjusted descriptive figures, not fair market value**. A price below the neighborhood median is not automatically undervalued. Validate sale date, financing concessions and unusual/distressed transactions. Dollar adjustments require market evidence; do not apply mechanical dollars-per-square-foot or assume repair cost equals value discount.
+
+Investigate the reasons for low pricing: renovation needs, roof/HVAC/foundation, unpermitted work, property restrictions, seller motivation, insurance, wildfire/flood exposure, location disadvantages, special assessments and sale concessions. Record suspected versus confirmed concerns, evidence URL, estimated repair cost and remediation status. Include immediate repairs and contingency in cash invested and underwriting. Open high/critical findings prevent automated REVIEW.
+
+Without three screen-qualified closed sales the valuation remains unverified and the automated result remains WATCH, even when rent and cash flow appear attractive.
 
 ## 3. Financial objectives and capital
 
@@ -38,7 +48,7 @@ Base case should meet at least $200/month, preferably $250/month. Downside case:
 
 - **REJECT**: fails property rules, legal/insurance feasibility, or has unsupportable economics.
 - **WATCH**: possibly interesting but current price economics fail or important inputs missing; calculate required discount without labeling it a fair-value discount.
-- **REVIEW**: base economics pass with credible but incomplete evidence; deeper verification needed.
+- **REVIEW**: base/downside economics pass with at least 3 recorded rent comps and 3 screen-qualified neighborhood closed-sale comps, and no open high/critical findings; deeper verification is still required.
 - **DUE DILIGENCE**: verified rent comps, financing/insurance/tax estimates, base and downside pass; still requires inspection, attorney/accountant and investor approval.
 
 Missing mandatory numbers => no investment-ready result. Record adverse findings even where numerics pass. Decisions can change as evidence evolves.
