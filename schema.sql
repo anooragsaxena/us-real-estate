@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS sale_comps (
     source_url TEXT NOT NULL CHECK (source_url LIKE 'https://%'),
     observed_on TEXT NOT NULL,
     sale_verified INTEGER NOT NULL DEFAULT 0 CHECK (sale_verified IN (0,1)),
+    verification_url TEXT,
     transaction_type TEXT NOT NULL DEFAULT 'unknown'
        CHECK (transaction_type IN ('arm_length','distressed','unknown')),
     condition_relation TEXT NOT NULL DEFAULT 'unknown'
