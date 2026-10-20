@@ -46,6 +46,7 @@ PROFILES = {
         .03, .04, .03, .03, .05,
     ),
 }
+MODEL_VERSION = "2026-10-conservative-v1"
 DEFAULT_HURDLE_NOMINAL = .08  # diagnostic reference ONLY, not a user-approved hurdle
 DEFAULT_INFLATION_FOR_REAL_RETURN = .03  # illustration, not inflation forecast
 DEFAULT_EXIT_SELLING_COST = .06
@@ -161,8 +162,14 @@ def project(p: Inputs, scenario="guarded_base", years=5,
         amount / (1 + nominal_hurdle) ** idx for idx, amount in enumerate(flows)
     )
     return {
+        "model_version": MODEL_VERSION,
         "scenario": scenario,
         "years": years,
+        "annual_property_tax_inflation": cfg.property_tax_inflation,
+        "annual_insurance_inflation": cfg.insurance_inflation,
+        "annual_hoa_inflation": cfg.hoa_inflation,
+        "annual_other_cost_inflation": cfg.other_cost_inflation,
+        "insurance_level_shock": cfg.one_time_insurance_shock,
         "mortgage_rate_assumed_fixed_no_refinance": p.annual_interest_rate,
         "scenario_appreciation_path": list(cfg.home_price_change[:years]),
         "scenario_rent_change_path": list(cfg.rent_change[:years]),
@@ -202,6 +209,7 @@ def project(p: Inputs, scenario="guarded_base", years=5,
 def compare_scenarios(p, horizons=DEFAULT_HORIZONS, **kwargs):
     return {
         "assumptions": {
+            "model_version": MODEL_VERSION,
             "scenarios": list(PROFILES),
             "horizons_years": list(horizons),
             "no_refinance": True,
