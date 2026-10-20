@@ -21,6 +21,12 @@ Three Zillow *asking-rent* observations, all Kingman 86401, 3BD/2BA detached hou
 
 The base-case **$1,500/month** rent is lower than the $1,550 comp median and a little higher than Zillow's $1,457 model. These are preliminary ZIP-level matches; distances, finishes, lease length, date freshness and achieved rents require verification.
 
+## Neighborhood sold-comparable valuation — pending
+
+The original case study tested **rental cash flow only**. At the time of this note we have **not** independently identified and verified three closed, physically comparable Kingman neighborhood sales. Accordingly, there is **no supported neighborhood fair-value estimate and no verified statement that this listing is below market**. The listing's price reduction from a prior ask is not proof of a bargain.
+
+Under the new property-evaluation skill, add at least three sold comps with closing dates, proximity, finished area, condition differences and independent verification links before making a valuation judgment. Document any suspected renovation or location discount with evidence and a repair estimate. This missing work does not change the present WATCH result from negative rental cash flow.
+
 ## Underwriting assumptions
 
 - $219,900 acquisition at asking; **30% down**; 30-year amortization; **7.75% fixed APR scenario**, not an actual foreign-national quote.
