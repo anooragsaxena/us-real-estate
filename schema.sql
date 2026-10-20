@@ -98,6 +98,17 @@ CREATE TABLE IF NOT EXISTS assessments (
     notes TEXT NOT NULL DEFAULT ''
 );
 
+-- Reproducible total-return runs; full input and scenario outputs retained.
+CREATE TABLE IF NOT EXISTS projections (
+    id INTEGER PRIMARY KEY,
+    listing_id INTEGER NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
+    projected_at TEXT NOT NULL DEFAULT (datetime('now')),
+    inputs_json TEXT NOT NULL,
+    results_json TEXT NOT NULL,
+    notes TEXT NOT NULL DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS idx_projections_listing ON projections(listing_id, id DESC);
+
 CREATE INDEX IF NOT EXISTS idx_listings_market ON listings(state, city);
 CREATE INDEX IF NOT EXISTS idx_rental_comps_listing ON rental_comps(listing_id);
 CREATE INDEX IF NOT EXISTS idx_assessments_listing ON assessments(listing_id, id DESC);
