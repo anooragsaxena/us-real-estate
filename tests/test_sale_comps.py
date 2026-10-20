@@ -89,6 +89,7 @@ class CliSaleEvidenceTests(unittest.TestCase):
                      "--price", str(price), "--sold-on", "2026-08-15",
                      "--beds", "3", "--baths", "2", "--sqft", "1400",
                      "--distance", "0.5", "--transaction", "arm_length", "--verified",
+                     "--verification-url", f"https://county.example/transfer-{i}",
                      "--observed", TODAY)
         comp_report = self.cli("comps", "--listing-id", "1", "--as-of", TODAY)
         self.assertIn("Strict screen-qualified: 3", comp_report)
@@ -116,6 +117,7 @@ class CliSaleEvidenceTests(unittest.TestCase):
         self.assertEqual(len(doc["findings"]), 1)
         self.assertEqual(doc["assessments"][0]["screen_status"], "WATCH")
         self.assertEqual(doc["assessments"][1]["screen_status"], "REVIEW")
+        self.assertEqual(doc["sale_comps"][0]["verification_url"], "https://county.example/transfer-0")
         self.assertEqual(
             json.loads(doc["assessments"][0]["results_json"])["sale_comparison"]["screen_qualified_sale_comps"], 3
         )
