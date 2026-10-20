@@ -1,10 +1,10 @@
 # Investment Policy — U.S. Single-Family Rentals
 
-Version: 1.1 | Effective: 2026-10-19 | Currency: USD unless stated otherwise
+Version: 2.0 | Effective: 2026-10-19 | Currency: USD unless stated otherwise
 
 ## 1. Investment mandate
 
-Acquire U.S. real estate for portfolio diversification through durable, long-term rental income, reasonable asset quality and potential long-run appreciation. Investor is a **Canadian tax resident**. Long-term financial resilience and positive cash flow take precedence over vacation use, STR revenue or forecasts of a market rebound. Do not assume appreciation or interest-rate declines to make an investment work.
+Acquire U.S. real estate for portfolio diversification through durable, long-term rental income, reasonable asset quality and potential long-run appreciation. Investor is a **Canadian tax resident**. Long-term capital resilience, conservative total returns and recurring rental economics take precedence over vacation use or STR revenue. Positive cash flow is preferred, but value-based exceptions may be considered only with verifiable acquisition advantages, a separately approved cash-support budget and rigorous downside protection. Do not assume appreciation or interest-rate declines to justify buying.
 
 ## 2. Property requirements
 
@@ -24,7 +24,8 @@ Without three screen-qualified closed sales the valuation remains unverified and
 
 ## 3. Financial objectives and capital
 
-- Minimum sought positive pre-personal-income-tax cash flow: **$200/month**; target **$250/month**; $300+/month desirable.
+- **Income track (preferred):** seek +$200–$300/month pre-personal-income-tax cash flow; +$250/month target. Keep cash-on-cash yield and leveraged/unleveraged cost of capital in view.
+- **Value / total-return track (exception, not automatic):** near-break-even or moderately negative cash flow may be *investigated*, not approved, where an evidence-supported below-market acquisition or actionable renovation/value creation thesis exists. There is **no blanket permission to run negative**. Require user-approved annual funding cap, 24-month cash shortfall coverage separate from lender-required reserves, no hidden loss funding, and a return hurdle benchmarked against liquid alternatives. Until the user supplies a funding cap and accepts a risk hurdle, value-track candidates cannot be labeled purchase-ready.
 - Cash flow means scheduled rent less vacancy, operating costs, capital replacement reserve, and principal + interest mortgage payments. Include property manager fees even if self-managing is considered.
 - **Do not buy solely to hit the cash-flow number**. Assess cash-on-cash yield, cap rate, DSCR, location, repair risk, tenant turnover and alternative uses for invested cash.
 - Planning search budget: **$200K–$300K**, not a maximum or estimate of fair value. Starting capital goal previously discussed: roughly **$110K–$140K**, subject to actual down payment, lender terms, closing costs, repair costs, reserves, and USD/CAD.
@@ -42,13 +43,31 @@ Default screening allowances when no evidence exists: management 8% of scheduled
 
 Calculate cash flow using monthly debt service on an amortizing loan, not interest-only. Annualized cash-on-cash return = 12 x monthly cash flow / (down payment + closing + immediate repairs + initial reserves). These reserves remain cash assets but are counted as committed capital.
 
+## 4A. Long-horizon, high-rate realism (mandatory for value-track analysis)
+
+Use `projections.py` / `tracker.py project` to calculate **5- and 10-year nominal and inflation-adjusted IRR**, yearly after-debt cash flow, accumulated mortgage principal, property valuation path, exit sale costs, net sale proceeds, and **first 24-month and full-hold owner funding requirements**. Model 3 named pathways: guarded base, downside and limited upside. Write specific nominal assumptions alongside each model.
+
+**Non-negotiable projection rules:**
+- Base and limited-upside models assume **0% home-price appreciation in years 1 and 2**, not 3% in year 1. Downside incorporates multi-year outright price declines. This is a prudence rule, **not a claim that every ZIP code must fall**.
+- Rent growth is modest, and may lag **property tax, insurance, HOA and maintenance pressure**. Evidence from executed leases/rent comps overrides generic growth assumptions.
+- The mortgage **stays at its modeled origination rate** for the whole hold. No assumed 3% return, refi, or future cash-out; 6–7% is a *rate sensitivity only if plausible at origination*, not a forecast of financing relief. The placeholder 7.75% loan should be replaced with a foreign-national lender quote.
+- Use realistic transaction costs at purchase and exit; initial rehabilitation and capital reserves count as committed cash. **Do not count mortgage paydown twice**; debt balance is deducted from exit proceeds, and yearly cash flow already deducts full P&I.
+- Future property value **starts at acquisition price**, not an unadjusted sold-comps median or assumed instant renovation profit. Any explicit value-add uplift needs actual cost, documentation and independent comp-based justification—never injected as a generic growth rate.
+- Report both nominal and real returns. The default **8% nominal discount-rate comparison is illustrative only, NOT an adopted investor hurdle**; the default 3% inflation is also illustrative. Compare with risk-adjusted after-tax alternative investments and re-evaluate these assumptions with up-to-date macro evidence.
+- Forecast returns are **before** U.S./Canadian personal taxes and CAD/USD fluctuations; before purchase these need case-specific analysis. `projections.py` is for scenario bounding, not investment approval, and does not calculate probabilities.
+- Determine investor liquidity to withstand the first 24 months of negative cash flow, in addition to lender reserves. Require written justification and explicit approval for an exception, even when nominal projected IRR appears positive.
+
+See [dated research baseline](research/2026-10-19-macro-underwriting-baseline.md). Revisit when mortgage rates, inventory, local closed-sale prices, local rent absorption, inflation or fiscal evidence materially changes.
+
 ## 5. Downside discipline and decision gates
 
-Base case should meet at least $200/month, preferably $250/month. Downside case: 10% rent reduction AND at least 8.33% vacancy (equivalent to one month annually), re-evaluating variable costs accordingly; require >=$0/month downside cash flow for progression to deep diligence or record an explicit exception. Also review +1.5 percentage-point rate shock for variable/reset-rate products; additional repairs, taxes and insurance increases for all.
+The preferred **income track** still seeks at least +$200/month, targeting +$250/month, with nonnegative monthly downside cash flow. Stress rent down 10% and vacancy to at least 8.33% annually, alongside additional repair, tax and insurance increases. Fixed-rate loans have no assumed refinancing; consider an origination-rate shock before signing and +1.5 percentage-point resets only for genuine variable/reset mortgages.
+
+On the **value / total-return exception track**, an income-screen WATCH is **not an automatic rejection**, but neither does the model convert WATCH to REVIEW merely from projected appreciation. Require three credible closed-sale comps, three rent comps, documented value thesis, condition and rehabilitation verification, lender feasibility, actual lease terms, 5/10-year IRR scenarios, an explicit user-set negative-cash-support limit and an after-tax/currency risk review before human advancement. Leave the automated status WATCH until these are fulfilled and the investor approves the exception.
 
 - **REJECT**: fails property rules, legal/insurance feasibility, or has unsupportable economics.
 - **WATCH**: possibly interesting but current price economics fail or important inputs missing; calculate required discount without labeling it a fair-value discount.
-- **REVIEW**: base/downside economics pass with at least 3 recorded rent comps and 3 screen-qualified neighborhood closed-sale comps, and no open high/critical findings; deeper verification is still required.
+- **REVIEW**: automated **income-track** base/downside economics pass with at least 3 recorded rent comps and 3 screen-qualified neighborhood closed-sale comps, no unfunded identified repairs or open high/critical findings; deeper verification is still required. Value-track candidates remain WATCH pending a separate documented, investor-approved exception.
 - **DUE DILIGENCE**: verified rent comps, financing/insurance/tax estimates, base and downside pass; still requires inspection, attorney/accountant and investor approval.
 
 Missing mandatory numbers => no investment-ready result. Record adverse findings even where numerics pass. Decisions can change as evidence evolves.
