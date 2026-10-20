@@ -1,0 +1,73 @@
+{
+  "case_id": "2026-10-19_2030-Pacific-Ave",
+  "observed_on": "2026-10-19",
+  "evidence_note": "Zillow and Redfin publicly indexed listing details observed on 2026-10-19. Prices and availability can change. Rental ads are asking rents, not signed leases. Comps are same ZIP and 3BD/2BA; true micro-location/condition matching is not yet verified.",
+  "listing": {
+    "source": "Zillow",
+    "url": "https://www.zillow.com/homedetails/2030-Pacific-Ave-Kingman-AZ-86401/8378256_zpid/",
+    "address": "2030 Pacific Ave",
+    "city": "Kingman",
+    "state": "AZ",
+    "zip_code": "86401",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "property_type": "detached_sfh",
+    "asking_price_usd": 219900,
+    "listing_status": "active",
+    "size_sqft": 1324,
+    "year_built": 1987,
+    "annual_property_tax_usd": 744,
+    "hoa_reported": "No",
+    "zillow_rent_zestimate_usd": 1457,
+    "redfin_url": "https://www.redfin.com/AZ/Kingman/2030-Pacific-Ave-86401/home/119051389",
+    "notes": "Site-built detached house, public water and sewer, garage. Zillow price cut from $224,900 in Jun 2026 to $219,900 on Jul 27. Zillow source property taxes 2026 $744. Status may have changed since observed."
+  },
+  "rental_comps": [
+    {
+      "address": "2032 Louise Ave",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "size_sqft": 1272,
+      "asking_rent_usd": 1550,
+      "source_url": "https://www.zillow.com/homedetails/2032-Louise-Ave-Kingman-AZ-86401/240274179_zpid/",
+      "notes": "Zillow long-term single-family rental ad, 3/2 and similar size. Distances and condition adjustments not independently confirmed."
+    },
+    {
+      "address": "2803 Fairgrounds Blvd",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "size_sqft": 1377,
+      "asking_rent_usd": 1500,
+      "source_url": "https://www.zillow.com/homedetails/2803-Fairgrounds-Blvd-Kingman-AZ-86401/8378264_zpid/",
+      "notes": "Zillow long-term single-family rental ad; similar size. Distances and condition adjustments not independently confirmed."
+    },
+    {
+      "address": "2804 Simms Ave",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "size_sqft": 1159,
+      "asking_rent_usd": 1550,
+      "source_url": "https://www.zillow.com/homedetails/2804-Simms-Ave-Kingman-AZ-86401/8374070_zpid/",
+      "notes": "Zillow long-term single-family rental ad, somewhat smaller. Distances and condition adjustments not independently confirmed."
+    }
+  ],
+  "underwriting_inputs": {
+    "purchase_price_usd": 219900,
+    "monthly_rent_usd": 1500,
+    "down_payment_fraction": 0.3,
+    "annual_interest_rate": 0.0775,
+    "loan_years": 30,
+    "annual_property_tax_usd": 744,
+    "annual_insurance_usd": 1800,
+    "monthly_hoa_usd": 0,
+    "monthly_other_usd": 0,
+    "management_fraction": 0.08,
+    "vacancy_fraction": 0.05,
+    "maintenance_fraction": 0.06,
+    "capex_fraction": 0.05,
+    "closing_cost_fraction": 0.04,
+    "upfront_repairs_usd": 5000,
+    "reserves_usd": 25000,
+    "target_monthly_cashflow_usd": 250
+  }
+}
