@@ -31,6 +31,9 @@ def connect(db_path, initialize=False):
         for col, sql_type in (("finished_sqft", "REAL"), ("year_built", "INTEGER")):
             if col not in known:
                 conn.execute(f"ALTER TABLE listings ADD COLUMN {col} {sql_type}")
+        sale_cols = {r["name"] for r in conn.execute("PRAGMA table_info(sale_comps)")}
+        if "verification_url" not in sale_cols:
+            conn.execute("ALTER TABLE sale_comps ADD COLUMN verification_url TEXT")
         conn.commit()
     return conn
 
@@ -125,6 +128,10 @@ def cmd_sale_comp(conn, a):
     valid_date(a.sold_on)
     valid_date(a.observed)
     valid_url(a.url)
+    if a.verified and not a.verification_url:
+        raise ValueError("--verified requires independent --verification-url")
+    if a.verification_url:
+        valid_url(a.verification_url)
     if (a.price <= 0 or a.sqft <= 0 or a.beds <= 0 or a.baths <= 0
             or a.distance < 0 or a.sold_on > a.observed):
         raise ValueError("closed sale price, date, size, bedrooms/baths and distance must be valid")
@@ -133,11 +140,11 @@ def cmd_sale_comp(conn, a):
             """INSERT INTO sale_comps
                (listing_id,address,sold_price_usd,sold_on,bedrooms,bathrooms,
                 finished_sqft,year_built,distance_miles,source_url,observed_on,
-                sale_verified,transaction_type,condition_relation,notes)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                sale_verified,verification_url,transaction_type,condition_relation,notes)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (a.listing_id, a.address, a.price, a.sold_on, a.beds, a.baths,
              a.sqft, a.year_built, a.distance, a.url, a.observed,
-             int(a.verified), a.transaction, a.condition, a.notes),
+             int(a.verified), a.verification_url, a.transaction, a.condition, a.notes),
         )
     print(f"Saved closed sale comp #{cur.lastrowid} for listing #{a.listing_id}")
 
@@ -208,13 +215,22 @@ def cmd_assess(conn, a):
         """SELECT COUNT(*) FROM findings WHERE listing_id=? AND resolution='open'
            AND severity IN ('high','critical')""", (a.listing_id,)
     ).fetchone()[0]
+    estimated_repairs = conn.execute(
+        """SELECT COALESCE(SUM(estimated_cost_usd), 0) FROM findings
+           WHERE listing_id=? AND resolution='open' AND category='condition'""",
+        (a.listing_id,)
+    ).fetchone()[0]
+    repair_gap = max(0.0, estimated_repairs - p.upfront_repairs_usd)
+    sale_summary["expanded_radius_reason"] = a.radius_reason
     result["sale_comparison"] = sale_summary
     result["unresolved_high_or_critical_findings"] = severe_count
+    result["known_open_condition_repair_estimate_usd"] = estimated_repairs
+    result["unfunded_condition_repair_estimate_usd"] = repair_gap
     # Evidence gate, never investment or purchase authorization.
     status = (
         "REVIEW" if result["base_target_pass"] and result["stress_nonnegative"]
         and comp_count >= 3 and sale_summary["screen_qualified_sale_comps"] >= 3
-        and severe_count == 0 else "WATCH"
+        and severe_count == 0 and repair_gap == 0 else "WATCH"
     )
     with conn:
         cur = conn.execute(
@@ -230,6 +246,7 @@ def cmd_assess(conn, a):
     print(f"Rent comps recorded: {comp_count} (comparability NOT automatically verified)")
     print(f"Neighborhood sold comps screen-qualified: {sale_summary['screen_qualified_sale_comps']} (NOT an appraisal)")
     print(f"Open high/critical findings: {severe_count}")
+    print(f"Unfunded estimated condition repairs: USD {repair_gap:,.0f}")
     if sale_summary["median_closed_price_usd_unadjusted"] is not None:
         print(f"Raw ask vs sale-comp median: {sale_summary['ask_vs_median_pct']:+.1f}% (NOT fair-value discount)")
     print(f"Base cash flow: ${result['monthly_cashflow_usd']:,.2f}/mo")
@@ -368,6 +385,7 @@ def build_parser():
     sale.add_argument("--transaction", choices=["unknown", "arm_length", "distressed"], default="unknown")
     sale.add_argument("--condition", choices=["unknown","similar","better","worse"], default="unknown")
     sale.add_argument("--verified", action="store_true", help="closed price/date verified against independent evidence")
+    sale.add_argument("--verification-url", help="independent source for verified closing price and date")
     sale.add_argument("--observed", default=date.today().isoformat())
     sale.add_argument("--notes", default="")
     finding = sub.add_parser("finding", help="log an evidence-supported risk or repair concern")
