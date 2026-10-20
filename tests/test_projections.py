@@ -119,21 +119,28 @@ class ProjectionCliTests(unittest.TestCase):
             self.assertIn("guarded_base",out)
             self.assertIn("downside",out)
             self.assertIn("10Y",out)
+            self.assertIn("cash-support limit NOT SPECIFIED", out)
+            with_limit = run("project","--listing-id","1","--input",str(args_path),
+                             "--rent-source","advertised_comps",
+                             "--annual-support-budget","1000")
+            self.assertIn("Downside owner support within user-provided annual limit: False", with_limit)
             show=json.loads(run("show","--listing-id","1"))
-            self.assertEqual(len(show["projections"]),1)
+            self.assertEqual(len(show["projections"]),2)
             latest=json.loads(show["projections"][0]["results_json"])
             self.assertEqual(latest["rent_evidence_type"],"advertised_comps")
+            self.assertFalse(latest["value_exception_funding_check"]["within_stated_budget"])
+            self.assertIn("model_version",latest["assumptions"])
             self.assertLess(latest["outcomes"]["guarded_base"]["5"]["year_1_monthly_cashflow_usd"], 0)
             snapshot = Path(td)/"snapshot.json"
             run("export","--output",str(snapshot))
             snap=json.loads(snapshot.read_text())
-            self.assertEqual(len(snap["projections"]),1)
+            self.assertEqual(len(snap["projections"]),2)
             restored=db
             db=Path(td)/"copy.sqlite"
             run("init")
             run("import","--input",str(snapshot))
             restored_show=json.loads(run("show","--listing-id","1"))
-            self.assertEqual(len(restored_show["projections"]),1)
+            self.assertEqual(len(restored_show["projections"]),2)
             db=restored
 
 
